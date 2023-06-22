@@ -1,20 +1,18 @@
 version: 0.0
 os: linux
 files:
-  - source: /index.js
-    destination: /deploy-nodejs-aws-cicd
+  - source: /index.html
+    destination: /var/www/html/
 hooks:
   BeforeInstall:
-    - location: scripts/install_dependencies.sh
+    - location: scripts/install_dependencies
+      timeout: 300
+      runas: root
+    - location: scripts/start_server
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop_server
       timeout: 300
       runas: root
 
-  ApplicationStart:
-    - location: scripts/start_server.sh
-      timeout: 300
-      runas: root
-
-  ValidateService:
-    - location: scripts/validate_service.sh
-      timeout: 300
-  
